@@ -12,7 +12,7 @@ from getpass import getpass
 
 
 # Initializing urls
-baseUrl = "http://localhost:8000/"
+baseUrl = "https://traffic-penalty-system-sk17.herokuapp.com/"
 getPenaltiesUrl = "getpenalties"
 submitPenaltyUrl = "submitpenalty"
 payPenaltyUrl = "paypenalty"
