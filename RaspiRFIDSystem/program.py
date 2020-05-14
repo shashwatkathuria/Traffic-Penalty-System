@@ -4,12 +4,19 @@ Created on Sun Apr 29 14:15:23 2020
 @author: Shashwat Kathuria
 """
 
-############## FOR FIRE BRIGADE AND AMBULANCE, RFID WOULD HELP IN GREEN LIGHT
+# Traffic Penalty Raspberry Pi 3B RFID System
+# RFID-MFRC522
 
 # Importing required libraries
-import requests, json
+import requests, json, datetime
 from getpass import getpass
+import RPi.GPIO as GPIO
+from mfrc522 import SimpleMFRC522
+reader = SimpleMFRC522()
 
+# Cleaning up GPIO previous settings
+GPIO.cleanup()
+GPIO.setwarnings(False)
 
 # Initializing urls
 baseUrl = "https://traffic-penalty-system-sk17.herokuapp.com/"
@@ -84,27 +91,15 @@ def main():
 
         # Getting all penalties of a RFID
         if choice == 1:
-
-            # Scanning RFID
-            RFID = input("Enter user RFID: ")
-            print("--------------")
-
-            # Getting the penalties linked to above RFID through API
-            getPenaltiesResult = requestSession.get(baseUrl + getPenaltiesUrl + f"/{RFID}")
-            data = json.loads(getPenaltiesResult.content)
-            penaltiesArray = data["Penalties"]
-
-            # Printing the penalties of user RFID received
-            for penalty in penaltiesArray:
-                for key in penalty:
-                    print(key, ":", penalty[key], end="  ")
-                print()
+            
+            # Getting all penalties and storing last updated date inside RFID
+            getAllPenaltiesAndStoreDataInsideRFID(requestSession)
 
         # Submitting a new penalty for user RFID
         elif choice == 2:
 
             # Scanning RFID
-            RFID = input("Enter user RFID: ")
+            RFID, data = readRFID()
 
             # Printing the penalty types (menu)
             print("--------------")
@@ -147,6 +142,8 @@ def main():
             # Printing response
             try:
                 print(data["Success"])
+                # Getting all penalties and storing last updated date inside RFID
+                getAllPenaltiesAndStoreDataInsideRFID(requestSession)
             except:
                 print(data["Failure"])
 
@@ -177,6 +174,8 @@ def main():
             # Printing response
             try:
                 print(data["Success"])
+                # Getting all penalties and storing last updated date inside RFID
+                getAllPenaltiesAndStoreDataInsideRFID(requestSession)
             except:
                 print(data["Failure"])
         # Else exiting
@@ -186,6 +185,55 @@ def main():
     print("--------------------------------------")
     print("BYE")
     print("--------------------------------------")
+
+def getAllPenaltiesAndStoreDataInsideRFID(requestSession):
+    """Function to get all penalties and store last updated date inside RFID.
+       All data is stored inside server and not RFID as RFID has limited space."""
+    
+    # Scanning RFID
+    RFID, data = readRFID()
+    print("--------------")
+    print("User Data")
+    print("--------------")
+
+    # Getting the penalties linked to above RFID through API
+    getPenaltiesResult = requestSession.get(baseUrl + getPenaltiesUrl + f"/{RFID}")
+    data = json.loads(getPenaltiesResult.content)
+    penaltiesArray = data["Penalties"]
+
+    # Printing the penalties of user RFID received
+    for penalty in penaltiesArray:
+        for key in penalty:
+            print(key, ":", penalty[key])
+        print()
+    
+    # Writing last updated date inside RFID
+    try:
+        print("Hold RFID tag near sensor to write...")
+        reader.write(f"Last updated : {datetime.datetime.now()}")
+        print("Written")
+    finally:
+        # Cleaning up GPIO previous settings
+        GPIO.cleanup()
+
+def readRFID():
+    """Function to read RFID tag and return RFID and data inside it."""
+    
+    # Reading and returning as required
+    try:
+        # Reading and printing information inside card
+        print("Hold RFID tag near sensor for reading data...")
+        RFID, text = reader.read()
+        print("RFID : ", RFID)
+        print("Previous data inside RFID: ", text)
+    
+        # Returning data
+        return RFID, text
+    except KeyboardInterrupt:
+        
+        # Cleaning up GPIO previous settings
+        GPIO.cleanup()
+        raise
 
 # Calling main function
 if __name__ == "__main__":
