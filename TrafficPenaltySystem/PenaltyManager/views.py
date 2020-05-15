@@ -46,6 +46,18 @@ def register(request):
             response = render(request, "register.html", context)
             return responseHeadersModifier(response)
 
+        # Checking if any field is empty
+        if name == "" or email == "" or password == "" or confirmPassword == "" or RFID == "":
+
+            # Failure message if any field is empty
+            context = {
+                "Failure": "Please fill in all the fields."
+            }
+
+            # Returning response
+            response = render(request, "register.html", context)
+            return responseHeadersModifier(response)
+
         # Creating user
         user = User.objects.create_user(name, email, password)
 
@@ -53,8 +65,13 @@ def register(request):
         driver = Driver(user = user, RFID = RFID)
         driver.save()
 
+        # Success message if user successfully created
+        context = {
+            "Success": "User successfully created."
+        }
+
         # Returning response
-        response = render(request, "login.html")
+        response = render(request, "login.html", context)
         return responseHeadersModifier(response)
 
 def loginUser(request):
