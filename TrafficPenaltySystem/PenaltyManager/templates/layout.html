@@ -1,0 +1,109 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Traffic Penalty System</title>
+    <style>
+      html {
+          position: relative;
+          min-height: 100%;
+      }
+      a.navbar-brand {
+        color:black !important;
+        font-size: 1.9em !important;
+      }
+      a.nav-link {
+          color: black !important;
+          font-size: 1.2em !important;
+      }
+      a.nav-link:hover {
+        color: blue !important;
+      }
+      a.navbar-brand:hover {
+        color: blue !important;
+      }
+      .jumbotron {
+        text-align: center;
+        background: rgba(255,255,255,0.5);
+      }
+      footer {
+        background-color: black;
+        text-align: center;
+        color: white;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 100px;
+        width: 100%;
+        padding: 25px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body background="{% static 'PenaltyManager/images/seamless2.jpg' %}" >
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+
+      <a class="navbar-brand" href="{% url 'index' %}">Traffic Penalty System</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'summary' %}">Your Summary</a>
+              </li>
+
+          {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}" >Login</a>
+              </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contactus' %}" >Contact Us</a>
+          </li>
+
+        </ul>
+
+      </div>
+    </div>
+    </nav>
+
+    {% block body %}
+    {% endblock %}
+
+    <br><br><br><br>
+
+    <footer>
+       &copy;Trafic Penalty System
+       <br>
+       All rights reserved.
+    </footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
