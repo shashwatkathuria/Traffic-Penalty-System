@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+{% if not request.user.is_authenticated %}
+<div class="jumbotron">
+    <h1 class="display-4">Traffic Penalty System</h1>
+    <hr>
+
+  <div class="row">
+    <div class="col-sm-8">
+      <h1 class="display-4">Haven't registered yet?</h1>
+      <p class="lead">Register yourself today for getting your traffic penalty details!</p>
+    </div>
+
+    <div class="col-sm-4">
+      <img src="{% static 'PenaltyManager/images/p9.png' %}" width="100%">
+    </div>
+
+  </div>
+
+  <hr class="my-4">
+  <p>You must have a valid email address and unique RFID.</p>
+  <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
+
+</div>
+
+{% else %}
+
+<div class="jumbotron">
+
+  <div class="row">
+
+    <div class="col-sm-8">
+
+      <h1 class="display-4">Account Details</h1>
+      <hr>
+
+      <table class="table table-striped table-light table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" colspan="2">Account Details</th>
+          </tr>
+        </thead>
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Username:</th>
+            <th scope="col">{{ request.user.username }}</th>
+          </tr>
+          <tr>
+            <th scope="col">Email:</th>
+            <th scope="col">{{ request.user.email }}</th>
+          </tr>
+          <tr>
+            <th scope="col">RFID:</th>
+            <th scope="col">{{ request.user.driver.RFID }}</th>
+          </tr>
+        </thead>
+      </table>
+
+    </div>
+
+    <div class="col-sm-4">
+
+        <div class="row">
+            <img src="{% static 'PenaltyManager/images/p5.png' %}" style="width: 70%;" alt="">
+        </div>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+{% endif %}
+
+<div class="jumbotron">
+
+  <div class="row">
+
+    <div class="col-sm-4">
+
+      <h1 class="display-4">RFID<br>Summary</h1>
+      {% if request.user.is_authenticated %}
+        <p class="lead" >Click below to see Penalty Summary</p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg" href="{% url 'summary' %}" role="button">Penalty Summary</a>
+      {% else %}
+        <p class="lead" >Click below to Login</p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+      {% endif %}
+
+    </div>
+
+    <div class="col-sm-4">
+      <img src="{% static 'PenaltyManager/images/p1.png' %}" style="width:inherit;">
+    </div>
+
+    <div class="col-sm-4">
+
+      <h1 class="display-4">Have<br>Queries?</h1>
+      <p class="lead">Click below for our contacts</p>
+      <hr class="my-4">
+      <a class="btn btn-primary btn-lg" href="{% url 'contactus' %}" role="button">Contact Us</a>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="jumbotron">
+
+  <h1 class ="display-3">Always follow the traffic rules!</h1>
+  <hr class="my-4">
+
+  <div class="row">
+
+          <div class="col-sm-4">
+            <img src="{% static 'PenaltyManager/images/p3.png' %}" style="width: 60%;" alt="">
+          </div>
+
+          <div class="col-sm-4">
+            <img src="{% static 'PenaltyManager/images/p2.png' %}" style="width: 60%;" alt="">
+          </div>
+
+          <div class="col-sm-4">
+            <img src="{% static 'PenaltyManager/images/p4.png' %}" style="width: 40%;" alt="">
+          </div>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}
