@@ -19,7 +19,7 @@ GPIO.cleanup()
 GPIO.setwarnings(False)
 
 # Initializing urls
-baseUrl = "https://traffic-penalty-system-sk17.herokuapp.com/"
+baseUrl = "https://trafficpenaltysystemsk17.azurewebsites.net/"
 getPenaltiesUrl = "getpenalties"
 submitPenaltyUrl = "submitpenalty"
 payPenaltyUrl = "paypenalty"
